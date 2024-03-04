@@ -71,3 +71,7 @@ test("donation taejai with bank transfer", async ({ page }) => {
 
   await expect(page.getByText("เทใจได้รับข้อมูลแล้ว")).toBeVisible();
 });
+
+test("test login", async ({ page }) => {
+  // page is authenticated
+});
