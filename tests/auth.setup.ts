@@ -11,9 +11,7 @@ setup("authenticate", async ({ page }) => {
   await page.getByPlaceholder("รหัสผ่าน").fill("11qq22ww");
   await page.getByRole("button", { name: "เข้าสู่ระบบ" }).click();
 
-  await expect(
-    page.getByRole("button", { name: "toy.taemin toy.taemin" })
-  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "toy.taemin" })).toBeVisible();
 
   // End of authentication steps.
   await page.context().storageState({ path: authFile });

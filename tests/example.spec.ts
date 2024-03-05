@@ -44,7 +44,7 @@ test("donation taejai", async ({ page }) => {
   await expect(page.getByText("บริจาคสำเร็จ")).toBeVisible();
 });
 
-test("donation taejai with bank transfer", async ({ page }) => {
+test("001 donation taejai with bank transfer", async ({ page }) => {
   await page.goto("https://taejai-staging.opendream.in.th/th");
   await page.getByRole("link", { name: "ปันอิ่มคนไร้บ้าน" }).click();
   await page.locator("label").filter({ hasText: "500บาท" }).click();
@@ -72,6 +72,12 @@ test("donation taejai with bank transfer", async ({ page }) => {
   await expect(page.getByText("เทใจได้รับข้อมูลแล้ว")).toBeVisible();
 });
 
-test("test login", async ({ page }) => {
-  // page is authenticated
+test("002 test check donation history", async ({ page }) => {
+  await page.goto(
+    "https://taejai-member-staging.opendream.in.th/th/transaction-history"
+  );
+  await expect(
+    page.getByRole("link", { name: "ปันอิ่มคนไร้บ้าน" }).first()
+  ).toBeVisible();
+  await expect(page.getByText("4,444").first()).toBeVisible();
 });
