@@ -81,3 +81,74 @@ test("002 test check donation history", async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByText("4,444").first()).toBeVisible();
 });
+
+test("003 test create new fundraise page", async ({ page }) => {
+  await page.goto("https://taejai-staging.opendream.in.th/th");
+  await page
+    .getByRole("navigation")
+    .getByRole("link", { name: "เพจระดมทุน" })
+    .click();
+  await page
+    .getByRole("link", { name: "สร้างเพจระดมทุน", exact: true })
+    .click();
+  await expect(
+    page.getByText("สร้างการเปลี่ยนแปลงให้กับสังคมด้วย")
+  ).toBeVisible();
+
+  await page
+    .locator("div")
+    .filter({ hasText: /^สร้างเพจระดมทุน$/ })
+    .getByRole("link", { name: "สร้างเพจระดมทุน" })
+    .click();
+
+  await page.getByText("(แฟนคลับ/ศิลปิน ชวนทำบุญ)").click();
+  await page.getByRole("button", { name: "ต่อไป" }).click();
+  await page.getByLabel("project-item-1").locator("img").click();
+  await page.getByRole("button", { name: "ต่อไป" }).click();
+
+  await page
+    .locator("div")
+    .filter({ hasText: /^วันเริ่มต้น \*$/ })
+    .nth(4)
+    .click();
+  await page.getByLabel("Choose วันพุธที่ 6 มีนาคม").click();
+
+  await page
+    .locator("div")
+    .filter({ hasText: /^วันสิ้นสุด \*$/ })
+    .nth(4)
+    .click();
+  await page.getByLabel("Choose วันจันทร์ที่ 11 มีนาคม").click();
+
+  await page.getByPlaceholder("เป้าหมาย (ถ้ามี)").fill("100,0000");
+
+  await page
+    .getByText("กลับสร้างเพจระดมทุนThEn")
+    .getByRole("button", { name: "ยืนยัน" })
+    .click();
+  await page
+    .getByLabel("ยืนยันการสร้างเพจระดมทุน")
+    .getByRole("button", { name: "ยืนยัน" })
+    .click();
+
+  await expect(
+    page.getByRole("heading", { name: "คุณต้องการรับใบประกาศนียบัตร หรือไม่?" })
+  ).toBeVisible();
+
+  await page.getByLabel("ชื่อ").click();
+  await page.getByLabel("ชื่อ").fill("toytaemin");
+  await page.locator("#fundraising-certificate").click();
+  await page
+    .locator("#fundraising-certificate")
+    .setInputFiles(path.join(__dirname, "files/1.jpg"));
+  await page
+    .getByText(
+      "กลับคุณต้องการรับใบประกาศนียบัตร หรือไม่?ข้ามขั้นตอนนี้ส่งข้อมูล"
+    )
+    .getByRole("button", { name: "ส่งข้อมูล" })
+    .click();
+  await expect(page.getByText("สร้างเพจสำเร็จ")).toBeVisible();
+  await expect(
+    await page.getByText("“เฉาก๊วยเป็นผลผลิตต่อเนื่องจากการแปรรูปต้นเฉาก๊วย”")
+  ).toBeVisible();
+});
